@@ -77,7 +77,7 @@ function script_pather:moveToTarget(xx, yy, zz)
 	end
 
 	if (script_pathFlyingEX:canFly()) then
-		if ((dist > 150 or zDiff > 10) and not IsMounted()) then
+		if ((dist > 150) and not IsMounted()) then
 			if (script_pathFlyingEX:useMount()) then
 				return true;
 			end
