@@ -43,8 +43,7 @@ function script_vendorMenu:menu()
 				wasClicked, script_vendorEX.sellEpic = Checkbox("Sell epic items (purple)", script_vendorEX.sellEpic);
 
 				Separator();
-
-				Text("Unique Keep Items:");
+				Text("" .. script_vendorEX:getInfo());
 				wasClicked, script_vendorEX.selectedKeepItemNr = 
 					ComboBox("", script_vendorEX.selectedKeepItemNr, unpack(script_vendorEX.keepItems));
 
@@ -55,12 +54,12 @@ function script_vendorMenu:menu()
 				SameLine();
 				Text(" - Removes selected item from the keep list...");
 
+				Text("Add an item to the keep list:");
+				script_vendorEX.addItemName = InputText("", script_vendorEX.addItemName);
+				SameLine();
 				if Button("Add Item") then
 					script_vendorEX:addSaveItem(script_vendorEX.addItemName);
 				end
-
-				SameLine();
-				script_vendorEX.addItemName = InputText("", script_vendorEX.addItemName);
 				Text("Tip: All items in your bag will be added to the");
 				Text("keep item list when reloading scripts...");
 			end
