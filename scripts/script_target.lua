@@ -77,7 +77,7 @@ function script_target:doLoot()
 
 	-- Remove loot target if we can't move to it or not lootable/skinnable
 	local x, y, z = GetPosition(lootTarget);
-	if (IsNodeBlacklisted(x, y, z, 5) or (not IsLootable(lootTarget) and (not IsSkinnable(lootTarget) or (not self.skin))) ) then
+	if (IsNodeBlacklisted(x, y, z, 5) or (not IsLootable(lootTarget) and (not IsSkinnable(lootTarget) or (not self.skin) or (not HasItem('Skinning Knife')))) ) then
 		self.lootTargets[self.currentLootTarget] = nil;
 		return;
 	end

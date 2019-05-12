@@ -39,7 +39,7 @@ script_grind = {
 	unStuckPos = {},
 	unStuckTime = 0,
 	jump = false,
-	useMount = false,
+	useMount = true,
 	tryMountTime = 0,
 	autoTalent = true,
 	gather = true,
@@ -122,6 +122,9 @@ function script_grind:run()
 	if (IsMoving()) then
 		script_pather:jumpObstacles();
 	end
+
+	-- Update node distance depending on if we are mounted or not
+	script_path:setNavNodeDist();
 
 	-- Check: Pause, Unstuck, Vendor, Repair, Buy and Sell etc
 	if (script_grindEX:doChecks()) then return; end
