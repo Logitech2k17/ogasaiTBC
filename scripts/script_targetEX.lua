@@ -22,9 +22,13 @@ function script_targetEX:getNearestEnemy()
 	while i ~= 0 do
 		if (targetType == 3) then
 			if (not IsDead(i) and CanAttack(i) and not IsCritter(i)) then
-				if (GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetLocalPlayer())
-					or GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetPet())) then
+				if (GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetLocalPlayer())) then
 					return i;
+				end
+				if (GetPet() ~= 0) then
+					if (GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetPet())) then
+						return i;
+					end
 				end
 			end
 		end
@@ -39,9 +43,10 @@ function script_targetEX:getNearestEnemy()
 				-- valid check: level, range, tapped
 				local iLevel = GetLevel(i);
 				local dist = GetDistance(i);
-				if (dist < script_target.pullRange 
-					and iLevel >= script_target.minLevel and iLevel <= script_target.maxLevel
-					and (not IsTapped(i) or IsTappedByMe(i))
+				if ( (dist < script_target.pullRange) 
+					and (iLevel >= script_target.minLevel) 
+					and (iLevel <= script_target.maxLevel)
+					and ((not IsTapped(i) or IsTappedByMe(i)))
 					and script_targetEX:isValid(i)) then
 					if (dist < closestDist) then
 						closestDist = dist;
