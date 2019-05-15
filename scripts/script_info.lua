@@ -28,7 +28,7 @@ function script_info:nrTargetingMe()
 		if (targetType == 3) then
 			if (GetUnitsTarget(i) ~= 0) then
 				if (GetGUID(GetUnitsTarget(i)) == GetGUID(player)
-					or (GetCreatorsGUID(GetUnitsTarget(i)) == GetGUID(GetLocalPlayer()))
+					or GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetPet())
 				) then 
 					adds = adds + 1;
 				end
