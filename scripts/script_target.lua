@@ -6,7 +6,6 @@ script_target = {
 	skipDemon = false,
 	skipBeast = false,
 	skipAberration = false,
-	skipCritter = true,
 	skipDragonkin = false,
 	skipGiant = false,
 	skipMechanical = false,
@@ -178,25 +177,23 @@ function script_target:getTarget()
 	local nearestTarget = script_targetEX:getNearestEnemy();
 
 	-- Select the closest target if our last target is dead
-	if (lastTarget == 0) then
+	if (IsDead(lastTarget) or lastTarget == nil or lastTarget == 0) then
 		targetObj = nearestTarget;
+		lastTarget = 0;
 	end
+	
+	if (lastTarget ~= 0) then
+		-- Check: Swap to the nearest enemy if not in combat yet
+		if (not IsInCombat() and GetDistance(nearestTarget) < GetDistance(lastTarget)) then 
+			targetObj = nearestTarget; 
+		end
 
-	-- Check: If we are in combat but we have no targets perhaps it's low level mob, kill it
-	if (lastTarget == 0 and nearestTarget == 0 and IsInCombat()) then
-		targetObj = GetTarget();
-	end
-
-	-- Check: Swap to the nearest enemy if not in combat yet
-	if (not IsInCombat() and GetDistance(nearestTarget) < GetDistance(lastTarget)) then 
-		targetObj = nearestTarget; 
-	end
-
-	-- Check: Swap to the target with lowest HP
-	local lastTargetHP = GetHealthPercentage(lastTarget); 
-	local nearestTargetHP = GetHealthPercentage(nearestTarget);
-	if (lastTargetHP >= nearestTargetHP) then 
-		targetObj = nearestTarget;
+		-- Check: Swap to the target with lowest HP
+		local lastTargetHP = GetHealthPercentage(lastTarget); 
+		local nearestTargetHP = GetHealthPercentage(nearestTarget);
+		if (lastTargetHP >= nearestTargetHP) then 
+			targetObj = nearestTarget;
+		end
 	end
 
 	-- Set and save our target

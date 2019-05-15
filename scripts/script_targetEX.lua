@@ -8,7 +8,7 @@ function script_targetEX:getNearestEnemy()
 
 	-- return last target
 	if (script_grind.target ~= nil and script_grind.target ~= 0) then
-		if (not IsDead(script_grind.target) and IsInCombat()) then
+		if (not IsDead(script_grind.target) and IsInCombat() and GetHealthPercentage(script_grind.target) < 100) then
 			if (GetGUID(GetUnitsTarget(script_grind.target)) == GetGUID(GetLocalPlayer())
 				or GetTargetGUID(GetUnitsTarget(script_grind.target)) == GetTargetGUID(GetPet()) 
 				or IsTappedByMe(script_grind.target)) then
@@ -22,7 +22,7 @@ function script_targetEX:getNearestEnemy()
 	while i ~= 0 do
 		if (targetType == 3) then
 			if (not IsDead(i) and CanAttack(i) and not IsCritter(i)) then
-				if (GetGUID(GetUnitsTarget(i)) == GetGUID(GetLocalPlayer()) 
+				if (GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetLocalPlayer())
 					or GetTargetGUID(GetUnitsTarget(i)) == GetTargetGUID(GetPet())) then
 					return i;
 				end
@@ -36,7 +36,6 @@ function script_targetEX:getNearestEnemy()
 	while i ~= 0 do
 		if (targetType == 3) then
 			if (not IsDead(i) and CanAttack(i) and not IsCritter(i)) then
-				
 				-- valid check: level, range, tapped
 				local iLevel = GetLevel(i);
 				local dist = GetDistance(i);
@@ -83,8 +82,6 @@ function script_targetEX:isValid(i)
 	elseif (script_target.skipBeast and strfind("Beast", creatureType)) then
 		return false;
 	elseif (script_target.skipAberration and strfind("Aberration", creatureType)) then
-		return false;
-	elseif (script_target.skipCritter and strfind("Critter", creatureType)) then
 		return false;
 	elseif (script_target.skipDragonkin and strfind("Dragonkin", creatureType)) then
 		return false;
