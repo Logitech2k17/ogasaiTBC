@@ -233,30 +233,6 @@ function script_grind:run()
 		end
 		return;
 	end
-	
-	if (self.target ~= 0 and self.target ~= nil) then
-		-- Swap target if we are not in combat and there is a closer target
-		if (script_target:getTarget() ~= GetTargetGUID(self.target) and not IsInCombat()) then
-			--ClearTarget(); 
-			local targetGUID = script_target:getTarget();
-			self.target = GetGUIDTarget(targetGUID);
-			UnitInteract(self.target);
-			return;
-		end
-
-		-- Swap target if we are in combat and there is a closer target attacking us and our target is at 100 percent
-		if (script_target:getTarget() ~= GetTargetGUID(self.target) and IsInCombat() and GetHealthPercentage(self.target) == 100) then
-			local newTarget = GetGUIDTarget(targetGUID);
-			if (GetUnitsTarget(newTarget) == GetLocalPlayer()) then
-				ClearTarget();
-				self.target = newTarget;
-				UnitInteract(self.target);
-				return;
-			end
-			
-		end
-
-	end
 
 	-- Check: Dont pull monsters too far away from the grinding hotspot
 	if (self.target ~= 0 and self.target ~= nil and not IsInCombat()) then

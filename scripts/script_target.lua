@@ -11,8 +11,8 @@ script_target = {
 	skipMechanical = false,
 	skipElites = true,
 	pullRange = 89,
-	minLevel = GetLevel(GetLocalPlayer())-5,
-	maxLevel = GetLevel(GetLocalPlayer())+1,
+	minLevel = 0,
+	maxLevel = 0,
 	currentLevel = GetLevel(GetLocalPlayer());
 	currentTarget = 0,
 	currentLootTarget = 0,
@@ -26,6 +26,8 @@ script_target = {
 }
 
 function script_target:setup()
+	self.minLevel = GetLevel(GetLocalPlayer())-5;
+	self.maxLevel = GetLevel(GetLocalPlayer())+1;
 	self.lootTimer = GetTimeEX();
 	self.isSetup = true;
 	DEFAULT_CHAT_FRAME:AddMessage('script_target: loaded...');
@@ -186,6 +188,18 @@ function script_target:getTarget()
 		-- Check: Swap to the nearest enemy if not in combat yet
 		if (not IsInCombat() and GetDistance(nearestTarget) < GetDistance(lastTarget)) then 
 			targetObj = nearestTarget; 
+		end
+
+		-- Check: Swap to the nearest enemy if our target is not attacking us
+		if (GetDistance(nearestTarget) < GetDistance(lastTarget)) then 
+			if (GetTargetGUID(GetUnitsTarget(lastTarget)) ~= GetTargetGUID(GetLocalPlayer())) then
+				targetObj = nearestTarget; 	
+			end
+			if (GetPet() ~= 0) then
+				if (GetTargetGUID(GetUnitsTarget(lastTarget)) ~= GetTargetGUID(GetPet())) then
+					targetObj = nearestTarget; 
+				end
+			end
 		end
 
 		-- Check: Swap to the target with lowest HP
